@@ -1,0 +1,4103 @@
+<!DOCTYPE html>
+<html lang="pt" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title data-i18n="title">Moldova Europeia 2028</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Evita que o conteúdo fique escondido atrás do header */
+        section {
+            scroll-margin-top: 90px;
+        }
+
+        /* Animação do painel mobile */
+        #mobile-menu {
+            transform: translateY(-20px);
+            opacity: 0;
+            visibility: hidden;
+            transition:
+                opacity 0.25s ease,
+                transform 0.25s ease,
+                visibility 0.25s ease;
+        }
+
+        #mobile-menu.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Fundo escuro atrás do painel */
+        #mobile-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transition:
+                opacity 0.25s ease,
+                visibility 0.25s ease;
+        }
+
+        #mobile-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Bloquear scroll quando menu está aberto */
+        body.menu-open {
+            overflow: hidden;
+        }
+
+        /* =========================================================
+           MODAL DE INSCRIÇÃO
+        ========================================================= */
+        #inscricao-modal {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.25s ease, visibility 0.25s ease;
+        }
+
+        #inscricao-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #inscricao-modal .modal-card {
+            transform: translateY(16px) scale(0.98);
+            transition: transform 0.25s ease;
+        }
+
+        #inscricao-modal.active .modal-card {
+            transform: translateY(0) scale(1);
+        }
+
+        body.modal-open {
+            overflow: hidden;
+        }
+
+    </style>
+</head>
+
+
+<body class="bg-slate-50 text-slate-800 font-sans">
+
+
+    <!-- ========================================================= -->
+    <!-- HEADER / NAVBAR -->
+    <!-- ========================================================= -->
+
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-sm">
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+
+            <!-- LOGO -->
+            <div class="flex items-center space-x-3">
+
+ 
+
+                <span class="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
+                    MoldovaEuropeia<span class="text-blue-600">2028</span>
+                </span>
+
+            </div>
+
+
+            <!-- NAVEGAÇÃO DESKTOP -->
+            <nav class="hidden md:flex items-center space-x-8 font-medium text-sm text-slate-600">
+
+                <a href="#sobre"
+                   class="hover:text-blue-600 transition"
+                   data-i18n="nav_sobre">
+                    Sobre
+                </a>
+
+                <a href="#oradores"
+                   class="hover:text-blue-600 transition"
+                   data-i18n="nav_oradores">
+                    Oradores
+                </a>
+
+                <a href="#agenda"
+                   class="hover:text-blue-600 transition"
+                   data-i18n="nav_agenda">
+                    Agenda
+                </a>
+
+                <a href="#localizacao"
+                   class="hover:text-blue-600 transition"
+                   data-i18n="nav_localizacao">
+                    Localização
+                </a>
+
+                <a href="#organizacoes"
+                   class="hover:text-blue-600 transition"
+                   data-i18n="nav_organizacoes">
+                    Organizações e Parceiros
+                </a>
+
+            </nav>
+
+
+            <!-- PARTE DIREITA -->
+            <div class="flex items-center gap-2 sm:gap-4">
+
+                <!-- SELETOR DE IDIOMAS -->
+                <div class="relative inline-block">
+
+                    <select id="language-selector"
+                            class="bg-slate-100 border border-slate-200 text-slate-700 text-xs font-semibold rounded-lg px-2 sm:px-3 py-2 outline-none focus:ring-2 focus:ring-blue-600 cursor-pointer">
+
+                        <option value="pt" selected>PT</option>
+                        <option value="ro">RO</option>
+                        <option value="en">ENG</option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- BOTÃO INSCRIÇÃO DESKTOP -->
+                <a href="#localizacao"
+                   id="btn-inscricao"
+                   class="hidden md:inline-flex bg-blue-600 hover:bg-blue-700 text-white font-medium px-5 py-2.5 rounded-full text-sm shadow-md shadow-blue-500/20 transition"
+                   data-i18n="btn_inscrever">
+                    Inscrever-se
+                </a>
+
+
+                <!-- BOTÃO MENU MOBILE -->
+                <button id="mobile-menu-button"
+                        type="button"
+                        aria-label="Abrir menu"
+                        aria-expanded="false"
+                        class="md:hidden w-10 h-10 rounded-xl bg-slate-100 hover:bg-blue-50 text-slate-700 hover:text-blue-600 flex items-center justify-center transition">
+
+                    <i id="mobile-menu-icon" class="fa-solid fa-bars text-lg"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+    </header>
+
+
+
+    <!-- ========================================================= -->
+    <!-- MOBILE OVERLAY -->
+    <!-- ========================================================= -->
+
+    <div id="mobile-overlay"
+         class="fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm md:hidden">
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- PAINEL DE NAVEGAÇÃO MOBILE -->
+    <!-- ========================================================= -->
+
+    <div id="mobile-menu"
+         class="fixed top-20 left-3 right-3 z-50 md:hidden">
+
+        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+
+            <!-- Cabeçalho do painel -->
+            <div class="flex items-center justify-between px-5 py-4 border-b border-slate-100">
+
+                <div>
+                    <p class="text-xs font-semibold uppercase tracking-wider text-blue-600">
+                        <span data-i18n="mobile_menu_tag">Navegação</span>
+                    </p>
+
+                    <h3 class="text-lg font-bold text-slate-900">
+                        <span data-i18n="mobile_menu_title">
+                            Explorar evento
+                        </span>
+                    </h3>
+                </div>
+
+
+                <button id="mobile-menu-close"
+                        type="button"
+                        aria-label="Fechar menu" data-i18n-attr="aria-label" data-i18n="mobile_close"
+                        class="w-9 h-9 rounded-lg bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-500 flex items-center justify-center transition">
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- Tópicos -->
+            <nav class="p-3">
+
+                <!-- SOBRE -->
+                <a href="#sobre"
+                   class="mobile-nav-link flex items-center gap-4 px-4 py-4 rounded-xl hover:bg-blue-50 active:bg-blue-50 transition group">
+
+                    <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition">
+
+                        <i class="fa-solid fa-circle-info"></i>
+
+                    </div>
+
+                    <div class="flex-1">
+
+                        <span class="block font-bold text-slate-900"
+                              data-i18n="nav_sobre">
+                            Sobre
+                        </span>
+
+                        <span class="block text-xs text-slate-500 mt-0.5"
+                              data-i18n="mobile_sobre_desc">
+                            Sobre a conferência
+                        </span>
+
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+
+                </a>
+
+
+                <!-- ORADORES -->
+                <a href="#oradores"
+                   class="mobile-nav-link flex items-center gap-4 px-4 py-4 rounded-xl hover:bg-blue-50 active:bg-blue-50 transition group">
+
+                    <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition">
+
+                        <i class="fa-solid fa-users"></i>
+
+                    </div>
+
+                    <div class="flex-1">
+
+                        <span class="block font-bold text-slate-900"
+                              data-i18n="nav_oradores">
+                            Oradores
+                        </span>
+
+                        <span class="block text-xs text-slate-500 mt-0.5"
+                              data-i18n="mobile_oradores_desc">
+                            Oradores e participantes
+                        </span>
+
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+
+                </a>
+
+
+                <!-- AGENDA -->
+                <a href="#agenda"
+                   class="mobile-nav-link flex items-center gap-4 px-4 py-4 rounded-xl hover:bg-blue-50 active:bg-blue-50 transition group">
+
+                    <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition">
+
+                        <i class="fa-solid fa-calendar-days"></i>
+
+                    </div>
+
+                    <div class="flex-1">
+
+                        <span class="block font-bold text-slate-900"
+                              data-i18n="nav_agenda">
+                            Agenda
+                        </span>
+
+                        <span class="block text-xs text-slate-500 mt-0.5"
+                              data-i18n="mobile_agenda_desc">
+                            Programa do evento
+                        </span>
+
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+
+                </a>
+
+
+                <!-- LOCALIZAÇÃO -->
+                <a href="#localizacao"
+                   class="mobile-nav-link flex items-center gap-4 px-4 py-4 rounded-xl hover:bg-blue-50 active:bg-blue-50 transition group">
+
+                    <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                    </div>
+
+                    <div class="flex-1">
+
+                        <span class="block font-bold text-slate-900"
+                              data-i18n="nav_localizacao">
+                            Localização
+                        </span>
+
+                        <span class="block text-xs text-slate-500 mt-0.5"
+                              data-i18n="mobile_localizacao_desc">
+                            Onde acontece
+                        </span>
+
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+
+                </a>
+
+                <!-- ORGANIZAÇÕES E PARCEIROS -->
+                <a href="#organizacoes"
+                   class="mobile-nav-link flex items-center gap-4 px-4 py-4 rounded-xl hover:bg-blue-50 active:bg-blue-50 transition group">
+
+                    <div class="w-11 h-11 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:bg-blue-600 group-hover:text-white transition">
+
+                        <i class="fa-solid fa-handshake"></i>
+
+                    </div>
+
+                    <div class="flex-1">
+
+                        <span class="block font-bold text-slate-900"
+                              data-i18n="nav_organizacoes">
+                            Organizações e Parceiros
+                        </span>
+
+                        <span class="block text-xs text-slate-500 mt-0.5"
+                              data-i18n="mobile_organizacoes_desc">
+                            Organizações e parceiros da conferência
+                        </span>
+
+                    </div>
+
+                    <i class="fa-solid fa-chevron-right text-slate-300"></i>
+
+                </a>
+
+            </nav>
+
+
+            <!-- Botão inscrição -->
+            <div class="px-4 pb-4">
+
+                <a href="#localizacao"
+                   class="mobile-nav-link w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3.5 rounded-xl shadow-md transition">
+
+                    <i class="fa-solid fa-ticket"></i>
+
+                    <span data-i18n="btn_inscrever">
+                        Inscrever-se
+                    </span>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ========================================================= -->
+    <!-- HERO -->
+    <!-- ========================================================= -->
+
+    <section class="pt-32 pb-20 md:pt-44 md:pb-32 bg-gradient-to-b from-blue-900 via-blue-800 to-slate-900 text-white relative overflow-hidden">
+
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#cbd5e1_1px,transparent_1px)] [background-size:16px_16px]">
+        </div>
+
+
+        <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
+
+            <span class="inline-flex items-center gap-2 bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 uppercase tracking-wider">
+
+                <i class="fa-regular fa-calendar"></i>
+
+                <span data-i18n="hero_date">
+                    15 de outubro de 2026
+                </span>
+
+                <span>• Loures</span>
+
+            </span>
+
+
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight max-w-4xl mx-auto leading-tight mb-6"
+                data-i18n="hero_title">
+
+                Moldova Europeia 2028
+
+            </h1>
+
+
+            <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10 font-normal"
+               data-i18n="hero_desc">
+
+                Participe na Conferência «Moldova Europeia 2028» e junte-se a representantes de alto nível, líderes empresariais, investidores e decisores para um dia de diálogo, cooperação estratégica e oportunidades de networking entre a República da Moldova e Portugal.
+
+            </p>
+
+
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+
+                <a href="#agenda"
+                   class="bg-white text-slate-900 hover:bg-slate-100 font-semibold px-8 py-3.5 rounded-xl shadow-lg transition"
+                   data-i18n="btn_agenda">
+
+                    Ver Agenda
+
+                </a>
+
+
+                <a href="#localizacao"
+                   class="bg-blue-600 hover:bg-blue-500 text-white font-semibold px-8 py-3.5 rounded-xl shadow-lg shadow-blue-600/30 transition"
+                   data-i18n="btn_garantir">
+
+                    Garantir Lugar
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================================================= -->
+    <!-- SOBRE -->
+    <!-- ========================================================= -->
+
+    <section id="sobre" class="py-20 bg-white">
+
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-10">
+
+
+            <!-- CARD 1 -->
+            <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl transition">
+
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-6">
+
+                    <i class="fa-solid fa-users"></i>
+
+                </div>
+
+
+                <h3 class="text-xl font-bold mb-3 text-slate-900"
+                    data-i18n="sobre_card1_title">
+
+                    Participantes
+
+                </h3>
+
+
+                <p class="text-slate-600 text-sm leading-relaxed"
+                   data-i18n="sobre_card1_desc">
+
+                    Encontro de representantes institucionais, líderes empresariais, investidores e membros da comunidade moldava em Portugal.
+
+                </p>
+
+            </div>
+
+
+            <!-- CARD 2 -->
+            <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl transition">
+
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-6">
+
+                    <i class="fa-solid fa-microphone-lines"></i>
+
+                </div>
+
+
+                <h3 class="text-xl font-bold mb-3 text-slate-900"
+                    data-i18n="sobre_card2_title">
+
+                    Oradores 
+
+                </h3>
+
+
+                <p class="text-slate-600 text-sm leading-relaxed"
+                   data-i18n="sobre_card2_desc">
+
+                    Representantes das instituições da República da Moldova e de Portugal, deputados, eurodeputados e representantes do setor empresarial.
+
+                </p>
+
+            </div>
+
+
+            <!-- CARD 3 -->
+            <div class="p-8 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-xl transition">
+
+                <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-xl mb-6">
+
+                    <i class="fa-solid fa-handshake"></i>
+
+                </div>
+
+
+                <h3 class="text-xl font-bold mb-3 text-slate-900"
+                    data-i18n="sobre_card3_title">
+
+                    Cooperação Moldova–Portugal
+
+                </h3>
+
+
+                <p class="text-slate-600 text-sm leading-relaxed"
+                   data-i18n="sobre_card3_desc">
+
+                    Um espaço dedicado ao diálogo institucional, à cooperação bilateral, ao investimento e às oportunidades económicas.
+
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================================================= -->
+    <!-- ORADORES -->
+    <!-- ========================================================= -->
+
+    <section id="oradores" class="py-20 bg-slate-50 border-t border-slate-200">
+
+        <div class="max-w-7xl mx-auto px-6">
+
+
+            <div class="text-center mb-16">
+
+                <span class="text-blue-600 font-semibold text-sm uppercase tracking-wider"
+                      data-i18n="oradores_tag">
+
+                    Destaques
+
+                </span>
+
+
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2"
+                    data-i18n="oradores_title">
+
+                    Oradores e Participantes do Programa
+
+                </h2>
+
+
+                <p class="text-slate-600 mt-3 max-w-2xl mx-auto"
+                   data-i18n="oradores_desc">
+
+                    Conheça todas as personalidades e representantes institucionais integrados nos painéis e intervenções da conferência.
+
+                </p>
+
+            </div>
+
+
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+
+                <!-- IGOR GROSU -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col">
+
+                    <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Igor_GROSU%2C_Fracțiunea_parlamentară_„Partidul_Acțiune_și_Solidaritate”.jpg/960px-Igor_GROSU%2C_Fracțiunea_parlamentară_„Partidul_Acțiune_și_Solidaritate”.jpg"
+                         alt="Igor Grosu"
+                         class="w-full h-64 object-cover"
+                         style="object-position:center 35%;">
+
+                    <div class="p-6">
+
+                        <h3 class="text-lg font-bold text-slate-900">
+                            Igor Grosu
+                        </h3>
+
+                        <p class="text-blue-600 text-xs font-semibold mt-2"
+                           data-i18n="orador1_cargo">
+
+                            Presidente do Parlamento da República da Moldova
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RICARDO CARVALHO -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col">
+
+                    <img src="https://www.psd.pt/sites/default/files/styles/people_750x100_/public/2024-04/psd_ricardo_carvalho.jpg"
+                         alt="Ricardo Carvalho"
+                         class="w-full h-64 object-cover"
+                         style="object-position:center 8%;">
+
+                    <div class="p-6">
+
+                        <h3 class="text-lg font-bold text-slate-900">
+                            Ricardo Carvalho
+                        </h3>
+
+                        <p class="text-blue-600 text-xs font-semibold mt-2"
+                           data-i18n="orador2_cargo">
+
+                            Deputado da República Portuguesa
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CRISTINA GHERASIMOV -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col">
+
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Cristina_Gherasimov_official_portrait.jpg"
+                         alt="Cristina Gherasimov"
+                         class="w-full h-64 object-cover"
+                         style="object-position:center 25%;">
+
+                    <div class="p-6">
+
+                        <h3 class="text-lg font-bold text-slate-900">
+                            Cristina Gherasimov
+                        </h3>
+
+                        <p class="text-blue-600 text-xs font-semibold mt-2"
+                           data-i18n="orador3_cargo">
+
+                            Vice-Primeira-Ministra para a Integração Europeia da República da Moldova
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- HÉLDER SILVA -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col">
+
+                    <img src="https://www.psd.pt/sites/default/files/styles/people_750x100_/public/2025-09/Almada%20-%20Hélder%20Sousa%20Silva.png"
+                         alt="Hélder Silva"
+                         class="w-full h-64 object-cover"
+                         style="object-position:center 8%;">
+
+                    <div class="p-6">
+
+                        <h3 class="text-lg font-bold text-slate-900">
+                            Hélder Silva
+                        </h3>
+
+                        <p class="text-blue-600 text-xs font-semibold mt-2"
+                           data-i18n="orador4_cargo">
+
+                            Eurodeputado do Partido Popular Europeu
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ANGELA POJOGA -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col">
+
+                    <img src="angela.jpg"
+                         alt="Angela Pojoga"
+                         class="w-full h-64 object-cover"
+                         style="object-position:center 0%;">
+
+                    <div class="p-6">
+
+                        <h3 class="text-lg font-bold text-slate-900">
+                            Angela Pojoga
+                        </h3>
+
+                        <p class="text-blue-600 text-xs font-semibold mt-2"
+                           data-i18n="orador5_cargo">
+
+                            Deputada da República da Moldova
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- VALERIU ROBU -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col">
+
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/Valeriu_ROBU%2C_Fracțiunea_parlamentară_„Partidul_Acțiune_și_Solidaritate”.jpg"
+                         alt="Valeriu Robu"
+                         class="w-full h-64 object-cover"
+                         style="object-position:center 30%;">
+
+                    <div class="p-6">
+
+                        <h3 class="text-lg font-bold text-slate-900">
+                            Valeriu Robu
+                        </h3>
+
+                        <p class="text-blue-600 text-xs font-semibold mt-2"
+                           data-i18n="orador6_cargo">
+
+                            Deputado da República da Moldova
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- NATALIA BEJAN -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col">
+
+                    <img src="https://aspeninstitute.ro/wp-content/uploads/2024/06/NB-189-Natalia-Bejan-scaled.jpeg"
+                         alt="Natalia Bejan"
+                         class="w-full h-64 object-cover"
+                         style="object-position:center 10%;">
+
+                    <div class="p-6">
+
+                        <h3 class="text-lg font-bold text-slate-900">
+                            Natalia Bejan
+                        </h3>
+
+                        <p class="text-blue-600 text-xs font-semibold mt-2"
+                           data-i18n="orador7_cargo">
+
+                            Diretora da Agência de Investimento da República da Moldova
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- JOSÉ BIZARRO DUARTE -->
+                <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-slate-200 hover:shadow-md transition flex flex-col">
+
+                    <img src="https://am-mafra.noop.pt/uploads/2021/12/01psdjosebizarroduarte1-small_square_inset.jpg"
+                         alt="José Bizarro Duarte"
+                         class="w-full h-64 object-cover"
+                         style="object-position:center 20%;">
+
+                    <div class="p-6">
+
+                        <h3 class="text-lg font-bold text-slate-900">
+                            José Bizarro Duarte
+                        </h3>
+
+                        <p class="text-blue-600 text-xs font-semibold mt-2"
+                           data-i18n="orador8_cargo">
+
+                            Sócio de Auditoria da PwC Portugal
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ========================================================= -->
+    <!-- AGENDA -->
+    <!-- ========================================================= -->
+
+    <section id="agenda" class="py-20 bg-slate-100">
+
+        <div class="max-w-5xl mx-auto px-6">
+
+
+            <div class="text-center mb-14">
+
+                <span class="text-blue-600 font-semibold text-sm uppercase tracking-wider"
+                      data-i18n="agenda_tag">
+
+                    15 de outubro
+
+                </span>
+
+
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2"
+                    data-i18n="agenda_title">
+
+                    Agenda do Evento
+
+                </h2>
+
+
+                <p class="text-slate-600 mt-3 max-w-2xl mx-auto"
+                   data-i18n="agenda_desc">
+
+                    Programa da Conferência «Moldova Europeia 2028», dedicada ao diálogo institucional, à integração europeia, à cooperação bilateral e às oportunidades de investimento.
+
+                </p>
+
+            </div>
+
+
+            <div class="flex justify-center mb-12">
+
+                <div class="inline-flex flex-wrap justify-center items-center gap-3 bg-blue-600 text-white px-6 py-3 rounded-2xl shadow-lg">
+
+                    <i class="fa-regular fa-calendar text-lg"></i>
+
+                    <span class="font-bold"
+                          data-i18n="hero_date">
+
+                        15 de outubro de 2026
+
+                    </span>
+
+                    <span class="text-blue-200">•</span>
+
+                    <span>Loures</span>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="relative space-y-6">
+
+
+                <!-- 14:00 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+
+                    <div class="text-blue-600 font-bold text-lg mb-1">
+                        14h00
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-900"
+                        data-i18n="agenda_1400">
+
+                        Registo dos participantes
+
+                    </h3>
+
+                </div>
+
+
+
+                <!-- 14:30 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+
+                    <div class="text-blue-600 font-bold text-lg mb-1">
+                        14h30
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-900 mb-3"
+                        data-i18n="agenda_1430_title">
+
+                        Cerimónia oficial de abertura
+
+                    </h3>
+
+
+                    <ul class="space-y-3 text-slate-600 text-sm">
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="victor.jpg"
+                                 alt="Victor Țurcanu"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200">
+
+                            <div>
+
+                                <strong class="text-slate-600"
+                                        data-i18n="agenda_1430_victor_name">
+
+                                    Victor Țurcanu
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1430_victor_cargo">
+
+                                    Presidente da Associação da Comunidade da Diáspora
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/ina-mamaliga.jpg"
+                                 alt="Ina Mamaliga"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200">
+
+                            <div>
+
+                                <strong class="text-slate-600"
+                                        data-i18n="agenda_1430_ina_name">
+
+                                    Ina Mamaliga
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1430_ina_cargo">
+
+                                    Representante da Embaixada da República Moldova em Portugal
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="leao.jpg"
+                                 alt="Ricardo Leão"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200">
+
+                            <div>
+
+                                <strong class="text-slate-600"
+                                        data-i18n="agenda_1430_jose_name">
+
+                                    Ricardo Leão
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1430_jose_cargo">
+
+                                    Presidente da Câmara Municipal de Loures
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/mamadu-makiba.jpg"
+                                 alt="Mamadu Makiba"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200">
+
+                            <div>
+
+                                <strong class="text-slate-600"
+                                        data-i18n="agenda_1430_mamadu_name">
+
+                                    Mamadu Makiba
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1430_mamadu_cargo">
+
+                                    Representante do Gabinete de Relações com a Diáspora Moldava
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- 14:45 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+
+                    <div class="text-blue-600 font-bold text-lg mb-1">
+                        14h45
+                    </div>
+
+
+                    <h3 class="text-xl font-bold text-slate-900 mb-3"
+                        data-i18n="agenda_1445_title">
+
+                        Apresentação da República da Moldova
+
+                    </h3>
+
+
+                    <ul class="space-y-5 text-slate-600 text-sm">
+
+
+                        <li class="flex items-center gap-3">
+
+                            <i class="fa-solid fa-check text-blue-500 mt-1"></i>
+
+                            <span data-i18n="agenda_1445_1">
+                                Projeção de um documentário de apresentação
+                            </span>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/giovani-mamaliga.jpg"
+                                 alt="Giovani Mamaliga"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <div class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-0.5"
+                                     data-i18n="agenda_1445_giovani_role">
+
+                                    MODERADOR
+
+                                </div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1445_giovani_name">
+
+                                    Giovani Mamaliga
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1445_giovani_cargo">
+                                    Jornalista
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/marco-polo.jpg"
+                                 alt="Marco Polo"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1445_marco_name">
+
+                                    Marco Polo
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1445_marco_cargo">
+
+                                    Agência de Turismo da República da Moldova
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/cristovao-colombo.jpg"
+                                 alt="Cristóvão Colombo"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1445_cristovao_name">
+
+                                    Cristóvão Colombo
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1445_cristovao_cargo">
+
+                                    Agência de Turismo de Portugal
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- 15:15 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+
+                    <div class="text-blue-600 font-bold text-lg mb-1">
+                        15h15
+                    </div>
+
+
+                    <h3 class="text-xl font-bold text-slate-900 mb-3"
+                        data-i18n="agenda_1515_title">
+
+                        Discursos institucionais
+
+                    </h3>
+
+
+                    <ul class="space-y-4 text-slate-600 text-sm">
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="https://thumb.wikimedia.org/wikipedia/commons/thumb/7/73/Igor_GROSU%2C_Fracțiunea_parlamentară_„Partidul_Acțiune_și_Solidaritate”.jpg/960px-Igor_GROSU%2C_Fracțiunea_parlamentară_„Partidul_Acțiune_și_Solidaritate”.jpg"
+                                 alt="Igor Grosu"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1515_igor_name">
+
+                                    Igor Grosu
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1515_1">
+
+                                    Presidente do Parlamento da República da Moldova
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/marques-mendes.jpg"
+                                 alt="Marques Mendes"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1515_marques_name">
+
+                                    Marques Mendes
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1515_2">
+
+                                    Representante do Governo da República Portuguesa
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="ricardo.jpg"
+                                 alt="Ricardo Carvalho"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1515_ricardo_name">
+
+                                    Ricardo Carvalho
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1515_3">
+
+                                    Representante do Parlamento da República Portuguesa
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- 16:00 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+
+                    <div class="text-blue-600 font-bold text-lg mb-1">
+                        16h00
+                    </div>
+
+
+                    <div class="mb-4">
+
+                        <span class="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mb-2"
+                              data-i18n="panel_1">
+
+                            PAINEL TEMÁTICO I
+
+                        </span>
+
+
+                        <h3 class="text-xl font-bold text-slate-900"
+                            data-i18n="agenda_1600_title">
+
+                            Os desafios da integração europeia
+
+                        </h3>
+
+                    </div>
+
+
+                    <ul class="space-y-4 text-slate-600 text-sm">
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/giovani-mamaliga.jpg"
+                                 alt="Giovani Mamaliga"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <div class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-0.5"
+                                     data-i18n="agenda_1600_giovani_role">
+
+                                    MODERADOR
+
+                                </div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1600_giovani_name">
+
+                                    Giovani Mamaliga
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1600_giovani_cargo">
+                                    Jornalista
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/e/ec/Cristina_Gherasimov_official_portrait.jpg"
+                                 alt="Cristina Gherasimov"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1600_cristina_name">
+
+                                    Cristina Gherasimov
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1600_1">
+
+                                    Vice-Primeira-Ministra para a Integração Europeia da República da Moldova
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="helder.jpg"
+                                 alt="Hélder Silva"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1600_helder_name">
+
+                                    Hélder Silva
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1600_2">
+
+                                    Eurodeputado do Partido Popular Europeu
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/igor-dodon.jpg"
+                                 alt="Igor Dodon"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1600_dodon_name">
+
+                                    Igor Dodon
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1600_3">
+
+                                    Eurodeputado do Partido dos Socialistas Europeus
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- 16:45 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+
+                    <div class="text-blue-600 font-bold text-lg mb-1">
+                        16h45
+                    </div>
+
+
+                    <div class="mb-4">
+
+                        <span class="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mb-2"
+                              data-i18n="panel_2">
+
+                            PAINEL TEMÁTICO II
+
+                        </span>
+
+
+                        <h3 class="text-xl font-bold text-slate-900"
+                            data-i18n="agenda_1645_title">
+
+                            A relevância da cooperação bilateral entre a República da Moldova e Portugal
+
+                        </h3>
+
+                    </div>
+
+
+                    <ul class="space-y-4 text-slate-600 text-sm">
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/giovani-mamaliga.jpg"
+                                 alt="Giovani Mamaliga"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <div class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-0.5"
+                                     data-i18n="agenda_1645_giovani_role">
+
+                                    MODERADOR
+
+                                </div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1645_giovani_name">
+
+                                    Giovani Mamaliga
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1645_giovani_cargo">
+                                    Jornalista
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="angela.jpg"
+                                 alt="Angela Pojoga"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1645_angela_name">
+
+                                    Angela Pojoga
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1645_angela_cargo">
+
+                                    Deputada da República da Moldova
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="valeriu.jpg"
+                                 alt="Valeriu Robu"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1645_valeriu_name">
+
+                                    Valeriu Robu
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1645_valeriu_cargo">
+
+                                    Deputado da República da Moldova
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/hugo-soares.jpg"
+                                 alt="Hugo Soares"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1645_hugo_name">
+
+                                    Hugo Soares
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1645_hugo_cargo">
+
+                                    Deputado do PSD
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/pedro-carneiro.jpg"
+                                 alt="Pedro Carneiro"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1645_pedro_name">
+
+                                    Pedro Carneiro
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1645_pedro_cargo">
+
+                                    Deputado do PS
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+
+
+                <!-- 17:30 -->
+                <div class="bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-200">
+
+                    <div class="text-slate-600 font-bold text-lg mb-1">
+                        17h30
+                    </div>
+
+                    <h3 class="text-xl font-bold text-slate-900"
+                        data-i18n="agenda_1730">
+
+                        Pausa para café
+
+                    </h3>
+
+                </div>
+
+
+
+                <!-- 18:00 -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+
+                    <div class="text-blue-600 font-bold text-lg mb-1">
+                        18h00
+                    </div>
+
+
+                    <div class="mb-4">
+
+                        <span class="inline-block bg-blue-100 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mb-2"
+                              data-i18n="panel_3">
+
+                            PAINEL TEMÁTICO III
+
+                        </span>
+
+
+                        <h3 class="text-xl font-bold text-slate-900"
+                            data-i18n="agenda_1800_title">
+
+                            Dinamização do investimento e oportunidades de cooperação económica entre a República da Moldova e Portugal
+
+                        </h3>
+
+                    </div>
+
+
+                    <ul class="space-y-4 text-slate-600 text-sm">
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="images/giovani-mamaliga.jpg"
+                                 alt="Giovani Mamaliga"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <div class="text-blue-600 text-xs font-bold uppercase tracking-wider mb-0.5"
+                                     data-i18n="agenda_1800_giovani_role">
+
+                                    MODERADOR
+
+                                </div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1800_giovani_name">
+
+                                    Giovani Mamaliga
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1800_giovani_cargo">
+                                    Jornalista
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="natalia.jpg"
+                                 alt="Natalia Bejan"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1800_natalia_name">
+
+                                    Natalia Bejan
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1800_1">
+
+                                    Diretora da Agência de Investimento da República da Moldova
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+
+                        <li class="flex items-center gap-3">
+
+                            <img src="jose.jpg"
+                                 alt="José Bizarro Duarte"
+                                 class="w-10 h-10 rounded-full object-cover border-2 border-slate-200 shrink-0">
+
+                            <div>
+
+                                <strong class="text-slate-700"
+                                        data-i18n="agenda_1800_jose_name">
+
+                                    José Bizarro Duarte
+
+                                </strong>
+
+                                <span> — </span>
+
+                                <span data-i18n="agenda_1800_2">
+
+                                    Sócio de Auditoria da PwC Portugal
+
+                                </span>
+
+                            </div>
+
+                        </li>
+
+                    </ul>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- LOCALIZAÇÃO -->
+    <!-- ========================================================= -->
+
+    <section id="localizacao" class="py-20 bg-white border-t border-slate-200">
+
+        <div class="max-w-7xl mx-auto px-6">
+
+
+            <div class="text-center mb-16">
+
+                <span class="text-blue-600 font-semibold text-sm uppercase tracking-wider"
+                      data-i18n="localizacao_tag">
+
+                    Onde vai acontecer
+
+                </span>
+
+
+                <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2"
+                    data-i18n="localizacao_title">
+
+                    Localização do Evento
+
+                </h2>
+
+
+                <p class="text-slate-600 mt-3 max-w-2xl mx-auto"
+                   data-i18n="localizacao_desc">
+
+                    A conferência decorrerá num espaço histórico de referência no concelho de Loures.
+
+                </p>
+
+            </div>
+
+
+            <div class="grid lg:grid-cols-2 gap-10 items-center bg-slate-50 border border-slate-200 rounded-3xl p-8 md:p-12 shadow-sm">
+
+
+                <!-- INFORMAÇÕES -->
+                <div class="space-y-6">
+
+                    <div class="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl shadow-sm">
+
+                        <i class="fa-solid fa-map-location-dot"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <h3 class="text-2xl font-bold text-slate-900 mb-2"
+                            data-i18n="local_name">
+
+                            Palácio dos Marqueses da Praia e Monforte
+
+                        </h3>
+
+
+                        <p class="text-slate-600 text-base font-medium mb-4"
+                           data-i18n="local_address">
+
+                            Loures, Portugal
+
+                        </p>
+
+                    </div>
+
+
+                    <p class="text-slate-600 text-sm leading-relaxed"
+                       data-i18n="local_info">
+
+                        Um espaço com excelentes acessibilidades, preparado para acolher individualidades institucionais, corpo diplomático e convidados num ambiente solene e propício à cooperação estratégica.
+
+                    </p>
+
+
+                    <div>
+
+                        <a href="https://www.google.com/maps/search/?api=1&query=Palacio+dos+Marqueses+da+Praia+e+Monforte+Loures"
+                           target="_blank"
+                           rel="noopener noreferrer"
+                           class="inline-flex items-center gap-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3.5 rounded-xl shadow-md shadow-blue-500/20 transition">
+
+                            <i class="fa-solid fa-diamond-turn-right"></i>
+
+                            <span data-i18n="btn_maps">
+                                Abrir no Google Maps
+                            </span>
+
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- MAPA -->
+                <div class="relative w-full h-[400px] rounded-2xl overflow-hidden shadow-md border border-slate-300">
+
+                    <iframe
+                        width="100%"
+                        height="100%"
+                        style="border:0;"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        src="https://maps.google.com/maps?q=Pal%C3%A1cio%20dos%20Marqueses%20da%20Praia%20e%20Monforte%2C%20Loures&t=&z=16&ie=UTF8&iwloc=&output=embed">
+                    </iframe>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+<!-- ========================================================= -->
+<!-- ORGANIZAÇÕES E PARCEIROS -->
+<!-- ========================================================= -->
+
+<section id="organizacoes" class="py-20 bg-slate-50 border-t border-slate-200">
+    <div class="max-w-7xl mx-auto px-6">
+
+        <div class="text-center mb-14">
+            <span class="text-blue-600 font-semibold text-sm uppercase tracking-wider" data-i18n="organizacoes_tag">Rede</span>
+
+            <h2 class="text-3xl md:text-4xl font-extrabold text-slate-900 mt-2"
+                data-i18n="organizacoes_title">
+                Organizações e Parceiros
+            </h2>
+
+            <p class="text-slate-600 mt-3 max-w-3xl mx-auto leading-relaxed"
+               data-i18n="organizacoes_desc">
+                Entidades institucionais, organizações e referências empresariais associadas ao programa e ao contexto da Conferência «Moldova Europeia 2028».
+            </p>
+        </div>
+
+
+        <!-- ========================================================= -->
+        <!-- ORGANIZAÇÕES -->
+        <!-- ========================================================= -->
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+
+
+            <!-- ACD -->
+            <a href="https://www.facebook.com/comunitateadiasporei"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+
+                <div class="h-28 w-full flex items-center justify-center mb-5">
+                    <img src="acd.jpg"
+                         alt="ACD — Associação da Comunidade da Diáspora"
+                         class="h-24 w-24 rounded-2xl object-cover shadow-lg"
+                         loading="lazy">
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="inst_acd">
+                    ACD — Associação da Comunidade da Diáspora
+                </h3>
+
+            </a>
+
+
+            <!-- Governo da República da Moldova -->
+            <a href="https://gov.md/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+
+                <div class="h-28 w-full flex items-center justify-center mb-5">
+                    <img src="https://old.gov.md/sites/default/files/content_images/guvern_0.jpg"
+                         alt="Governo da República da Moldova"
+                         class="max-h-24 max-w-[280px] object-contain"
+                         loading="lazy">
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="inst_gov_moldova">
+                    Governo da República da Moldova
+                </h3>
+
+  
+            </a>
+
+
+            <!-- Governo de Portugal -->
+            <a href="https://portugal.gov.pt/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+
+                <div class="h-28 w-full flex items-center justify-center mb-5">
+                    <img src="https://logodownload.org/wp-content/uploads/2018/04/governo-portugal-3.png"
+                         alt="Governo de Portugal"
+                         class="max-h-24 max-w-[210px] object-contain"
+                         loading="lazy">
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="inst_gov_portugal">
+                    Governo de Portugal
+                </h3>
+
+            </a>
+
+
+            <!-- União Europeia -->
+            <a href="https://european-union.europa.eu/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+
+                <div class="h-28 w-full flex items-center justify-center mb-5">
+                    <img src="https://cb2014.centralbaltic.eu/sites/default/files/documents/EU%20flag%20small%20items%20RGB_2.jpg"
+                         alt="European Union"
+                         class="max-h-24 max-w-[210px] object-contain"
+                         loading="lazy">
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="inst_eu">
+                    União Europeia
+                </h3>
+
+            </a>
+
+
+            <!-- Invest Moldova -->
+            <a href="https://invest.gov.md/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+
+                <div class="h-28 w-full flex items-center justify-center mb-5">
+                    <img src="https://mma.prnewswire.com/media/2839411/Invest_Moldova_Logo.jpg"
+                         alt="Invest Moldova"
+                         class="max-h-24 max-w-[220px] object-contain"
+                         loading="lazy">
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="inst_invest_moldova">
+                    Invest Moldova Agency
+                </h3>
+
+            </a>
+
+
+            <!-- PwC Portugal -->
+            <a href="https://www.pwc.pt/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+
+                <div class="h-28 w-full flex items-center justify-center mb-5">
+                    <img src="https://cdn.cookielaw.org/logos/f13f2198-97ab-4c25-a5cd-0fca8ada2e21/019855e2-eb51-7757-bdc6-b23c158a315a/d105e355-9428-479d-a941-7b9ebc2ae129/PwC_logo_rgb_colour_pos_3.png"
+                         alt="PwC Portugal"
+                         class="max-h-24 max-w-[190px] object-contain"
+                         loading="lazy">
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="inst_pwc">
+                    PwC Portugal
+                </h3>
+
+            </a>
+
+
+            <!-- ========================================================= -->
+            <!-- NOVAS ENTIDADES -->
+            <!-- ========================================================= -->
+
+
+            <!-- Parlamento da República da Moldova -->
+            <a href="https://www.parlament.md/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+
+                <div class="h-28 w-full flex items-center justify-center mb-5">
+                    <img src="pmd.jpg"
+                         alt="Parlamento da República da Moldova"
+                         class="max-h-24 max-w-[210px] object-contain"
+                         loading="lazy">
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="inst_parl_moldova">
+                    Parlamento da República da Moldova
+                </h3>
+            </a>
+
+
+            <!-- Parlamento da República Portuguesa -->
+            <a href="https://www.parlamento.pt/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+
+                <div class="h-28 w-full flex items-center justify-center mb-5">
+                    <img src="ppt.jpg"
+                         alt="Parlamento da República Portuguesa"
+                         class="max-h-24 max-w-[210px] object-contain"
+                         loading="lazy">
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="inst_parl_portugal">
+                    Parlamento da República Portuguesa
+                </h3>
+            </a>
+
+
+            <!-- Câmara Municipal de Loures -->
+            <a href="https://www.cm-loures.pt/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+
+                <div class="h-28 w-full flex items-center justify-center mb-5">
+                    <img src="loures.jpg"
+                         alt="Câmara Municipal de Loures"
+                         class="max-h-24 max-w-[210px] object-contain"
+                         loading="lazy">
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="inst_loures">
+                    Câmara Municipal de Loures
+                </h3>
+
+            </a>
+
+
+            <!-- Parlamento Europeu -->
+            <a href="https://www.europarl.europa.eu/"
+               target="_blank"
+               rel="noopener noreferrer"
+               class="group bg-white rounded-2xl border border-slate-200 p-7 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col items-center text-center">
+
+                <div class="h-28 w-full flex items-center justify-center mb-5">
+                    <img src="peu.jpg"
+                         alt="Parlamento Europeu"
+                         class="max-h-24 max-w-[210px] object-contain"
+                         loading="lazy">
+                </div>
+
+                <h3 class="text-lg font-bold text-slate-900" data-i18n="inst_eu_parliament">
+                    Parlamento Europeu
+                </h3>
+
+            </a>
+
+        </div>
+
+
+        <!-- ========================================================= -->
+        <!-- NOTA -->
+        <!-- ========================================================= -->
+
+        <div class="mt-10 flex items-start gap-3 max-w-3xl mx-auto bg-blue-50 border border-blue-100 rounded-2xl p-5 text-sm text-blue-900">
+
+            <i class="fa-solid fa-circle-info mt-0.5 text-blue-600"></i>
+
+            <p data-i18n="organizacoes_note">
+                Os logótipos acima correspondem a entidades já identificadas no conteúdo da conferência e na documentação consultada. Os parceiros formais podem ser acrescentados ou ajustados à medida que forem confirmados pela organização.
+            </p>
+
+        </div>
+
+    </div>
+</section>
+
+
+
+
+
+
+
+    <!-- ========================================================= -->
+    <!-- FOOTER -->
+    <!-- ========================================================= -->
+
+
+<!-- ========================================================= -->
+<!-- MODAL / FORMULÁRIO DE INSCRIÇÃO -->
+<!-- ========================================================= -->
+
+<div id="inscricao-modal"
+     class="hidden fixed inset-0 z-[100] flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm"
+     role="dialog"
+     aria-modal="true"
+     aria-labelledby="inscricao-title">
+
+    <div class="modal-card w-full max-w-2xl max-h-[92vh] overflow-y-auto bg-white rounded-3xl shadow-2xl border border-slate-200">
+
+        <!-- CABEÇALHO -->
+        <div class="sticky top-0 z-10 bg-white/95 backdrop-blur-md border-b border-slate-100 px-6 sm:px-8 py-5 flex items-start justify-between">
+
+            <div>
+
+                <span class="text-blue-600 font-semibold text-xs uppercase tracking-wider"
+                      data-i18n="form_tag">
+                    Inscrição
+                </span>
+
+                <h2 id="inscricao-title"
+                    class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1"
+                    data-i18n="form_title">
+                    Inscreva-se na Conferência
+                </h2>
+
+                <p class="text-slate-500 text-sm mt-2"
+                   data-i18n="form_date">
+                    8 de novembro de 2026 · Loures, Portugal
+                </p>
+
+            </div>
+
+
+            <button id="inscricao-close"
+                    type="button"
+                    aria-label="Fechar formulário"
+                    data-i18n-attr="aria-label"
+                    data-i18n="form_close"
+                    class="shrink-0 ml-4 w-10 h-10 rounded-xl bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-500 flex items-center justify-center transition">
+
+                <i class="fa-solid fa-xmark"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- ================================================= -->
+        <!-- FORMULÁRIO -->
+        <!-- ================================================= -->
+
+        <form id="inscricao-form"
+              action="https://formspree.io/f/xnpnqony"
+              method="POST"
+              class="p-6 sm:p-8 space-y-6">
+
+
+            <!-- NOME + EMAIL -->
+            <div class="grid sm:grid-cols-2 gap-5">
+
+                <div>
+
+                    <label for="nome"
+                           class="block text-sm font-semibold text-slate-700 mb-2"
+                           data-i18n="form_name">
+
+                        Nome completo
+                        <span class="text-red-500">*</span>
+
+                    </label>
+
+                    <input id="nome"
+                           name="nome"
+                           type="text"
+                           required
+                           autocomplete="name"
+                           placeholder="O seu nome completo"
+                           data-i18n-placeholder="form_name_placeholder"
+                           class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10">
+
+                </div>
+
+
+                <div>
+
+                    <label for="email"
+                           class="block text-sm font-semibold text-slate-700 mb-2"
+                           data-i18n="form_email">
+
+                        Email
+                        <span class="text-red-500">*</span>
+
+                    </label>
+
+                    <input id="email"
+                           name="email"
+                           type="email"
+                           required
+                           autocomplete="email"
+                           placeholder="nome@email.com"
+                           data-i18n-placeholder="form_email_placeholder"
+                           class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10">
+
+                </div>
+
+            </div>
+
+
+            <!-- TELEFONE + ORGANIZAÇÃO -->
+            <div class="grid sm:grid-cols-2 gap-5">
+
+                <div>
+
+                    <label for="telefone"
+                           class="block text-sm font-semibold text-slate-700 mb-2"
+                           data-i18n="form_phone">
+
+                        Telefone
+
+                    </label>
+
+                    <input id="telefone"
+                           name="telefone"
+                           type="tel"
+                           autocomplete="tel"
+                           placeholder="+351 9XX XXX XXX"
+                           data-i18n-placeholder="form_phone_placeholder"
+                           class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10">
+
+                </div>
+
+
+                <div>
+
+                    <label for="organizacao"
+                           class="block text-sm font-semibold text-slate-700 mb-2"
+                           data-i18n="form_org">
+
+                        Organização / Empresa
+
+                    </label>
+
+                    <input id="organizacao"
+                           name="organizacao"
+                           type="text"
+                           autocomplete="organization"
+                           placeholder="Nome da organização"
+                           data-i18n-placeholder="form_org_placeholder"
+                           class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10">
+
+                </div>
+
+            </div>
+
+
+            <!-- CARGO + PARTICIPAÇÃO -->
+            <div class="grid sm:grid-cols-2 gap-5">
+
+                <div>
+
+                    <label for="cargo"
+                           class="block text-sm font-semibold text-slate-700 mb-2"
+                           data-i18n="form_role">
+
+                        Cargo / Função
+
+                    </label>
+
+                    <input id="cargo"
+                           name="cargo"
+                           type="text"
+                           placeholder="Ex.: Empresário, Deputado, Estudante..."
+                           data-i18n-placeholder="form_role_placeholder"
+                           class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10">
+
+                </div>
+
+
+                <div>
+
+                    <label for="participacao"
+                           class="block text-sm font-semibold text-slate-700 mb-2"
+                           data-i18n="form_participation">
+
+                        Tipo de participação
+                        <span class="text-red-500">*</span>
+
+                    </label>
+
+                    <select id="participacao"
+                            name="participacao"
+                            required
+                            class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10">
+
+                        <option value="" data-i18n="form_select">
+                            Selecione uma opção
+                        </option>
+
+                        <option value="Participante" data-i18n="form_participant">
+                            Participante
+                        </option>
+
+                        <option value="Representante institucional" data-i18n="form_institutional">
+                            Representante institucional
+                        </option>
+
+                        <option value="Empresário / Investidor" data-i18n="form_business_investor">
+                            Empresário / Investidor
+                        </option>
+
+                        <option value="Comunicação / Media" data-i18n="form_media">
+                            Comunicação / Media
+                        </option>
+
+                        <option value="Voluntário" data-i18n="form_volunteer">
+                            Voluntário
+                        </option>
+
+                        <option value="Outro" data-i18n="form_other">
+                            Outro
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+
+            <!-- OBSERVAÇÕES -->
+            <div>
+
+                <label for="mensagem"
+                       class="block text-sm font-semibold text-slate-700 mb-2"
+                       data-i18n="form_notes">
+
+                    Observações
+
+                </label>
+
+                <textarea id="mensagem"
+                          name="mensagem"
+                          rows="3"
+                          placeholder="Alguma informação que queira acrescentar?"
+                           data-i18n-placeholder="form_notes_placeholder"
+                          class="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-slate-800 outline-none transition focus:border-blue-600 focus:ring-4 focus:ring-blue-600/10 resize-y"></textarea>
+
+            </div>
+
+
+            <!-- CONSENTIMENTO -->
+            <label class="flex items-start gap-3 cursor-pointer">
+
+                <input id="consentimento"
+                       name="consentimento"
+                       type="checkbox"
+                       value="Sim"
+                       required
+                       class="mt-1 w-4 h-4 accent-blue-600">
+
+                <span class="text-sm text-slate-600 leading-relaxed"
+                      data-i18n="form_consent">
+
+                    Concordo com o tratamento dos meus dados para efeitos de inscrição e organização da conferência.
+
+                    <span class="text-red-500">*</span>
+
+                </span>
+
+            </label>
+
+
+            <!-- MENSAGEM DE SUCESSO -->
+            <div id="inscricao-sucesso"
+                 class="hidden rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 text-sm font-medium">
+
+                <i class="fa-solid fa-circle-check mr-2"></i>
+
+                <span data-i18n="form_success">
+                    Inscrição registada com sucesso!
+                    Entraremos em contacto consigo.
+                </span>
+
+            </div>
+
+
+            <!-- BOTÕES -->
+            <div class="flex flex-col-reverse sm:flex-row sm:justify-end gap-3 pt-2">
+
+                <button id="inscricao-cancelar"
+                        type="button"
+                        data-i18n="form_cancel"
+                        class="w-full sm:w-auto px-6 py-3.5 rounded-xl border border-slate-300 text-slate-700 font-semibold hover:bg-slate-50 transition">
+
+                    Cancelar
+
+                </button>
+
+
+                <button id="inscricao-submit"
+                        type="submit"
+                        class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold px-7 py-3.5 rounded-xl shadow-md shadow-blue-500/20 transition">
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                    <span data-i18n="form_submit">
+                        Enviar inscrição
+                    </span>
+
+                </button>
+
+            </div>
+
+
+            <!-- CAMPOS OBRIGATÓRIOS -->
+            <p class="text-xs text-slate-400 text-center"
+               data-i18n="form_required">
+
+                Os campos assinalados com * são obrigatórios.
+
+            </p>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- JAVASCRIPT -->
+<!-- ========================================================= -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const modal = document.getElementById("inscricao-modal");
+
+    const form = document.getElementById("inscricao-form");
+
+    const closeButton = document.getElementById("inscricao-close");
+
+    const cancelButton = document.getElementById("inscricao-cancelar");
+
+    const successMessage = document.getElementById("inscricao-sucesso");
+
+
+    /* =======================================================
+       FECHAR MODAL
+    ======================================================= */
+
+    function fecharModal() {
+
+        modal.classList.add("hidden");
+
+        document.body.classList.remove("overflow-hidden");
+
+    }
+
+
+    if (closeButton) {
+
+        closeButton.addEventListener("click", fecharModal);
+
+    }
+
+
+    if (cancelButton) {
+
+        cancelButton.addEventListener("click", fecharModal);
+
+    }
+
+
+    /* =======================================================
+       CLICAR FORA DO FORMULÁRIO
+    ======================================================= */
+
+    modal.addEventListener("click", function (event) {
+
+        if (event.target === modal) {
+
+            fecharModal();
+
+        }
+
+    });
+
+
+    /* =======================================================
+       TECLA ESC
+    ======================================================= */
+
+    document.addEventListener("keydown", function (event) {
+
+        if (event.key === "Escape" &&
+            !modal.classList.contains("hidden")) {
+
+            fecharModal();
+
+        }
+
+    });
+
+
+    /* =======================================================
+       ENVIO DO FORMULÁRIO
+    ======================================================= */
+
+    form.addEventListener("submit", function () {
+
+        /*
+         * O envio é feito diretamente pelo Formspree
+         * através do atributo "action" do formulário.
+         *
+         * Não é necessário criar um backend próprio
+         * para esta versão.
+         */
+
+        const submitButton =
+            document.getElementById("inscricao-submit");
+
+        submitButton.disabled = true;
+
+        submitButton.innerHTML = `
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <span>A enviar...</span>
+        `;
+
+    });
+
+});
+
+</script>
+
+
+
+
+    <footer class="bg-slate-900 text-slate-400 border-t border-slate-800">
+
+        <div class="max-w-7xl mx-auto px-6 py-8">
+
+            <div class="flex flex-col lg:flex-row items-center justify-between gap-6">
+
+
+                <!-- LOGO -->
+                <div class="flex items-center space-x-3 shrink-0">
+
+
+
+                    <span class="text-xl font-bold tracking-tight text-white">
+
+                        MoldovaEuropeia<span class="text-blue-500">2028</span>
+
+                    </span>
+
+                </div>
+
+
+                <!-- COPYRIGHT -->
+                <div class="text-center">
+
+                    <p class="text-xs text-slate-500">
+
+                        &copy; 2026 ACD - Associação da Comunidade da Diáspora.
+                        Todos os direitos reservados.
+
+                    </p>
+
+                </div>
+
+
+                <!-- REDES SOCIAIS -->
+                <div class="flex items-center gap-3 shrink-0">
+
+                    <span class="text-sm text-slate-500 mr-2 hidden sm:block" data-i18n="footer_follow">
+                        Siga-nos
+                    </span>
+
+
+                    <a href="#"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       aria-label="LinkedIn"
+                       class="w-11 h-11 rounded-full bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300">
+
+                        <i class="fa-brands fa-linkedin-in text-lg"></i>
+
+                    </a>
+
+
+                    <a href="https://www.facebook.com/comunitateadiasporei"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       aria-label="Facebook"
+                       class="w-11 h-11 rounded-full bg-slate-800 hover:bg-blue-600 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300">
+
+                        <i class="fa-brands fa-facebook-f text-lg"></i>
+
+                    </a>
+
+
+                    <a href="#"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       aria-label="Instagram"
+                       class="w-11 h-11 rounded-full bg-slate-800 hover:bg-pink-600 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300">
+
+                        <i class="fa-brands fa-instagram text-lg"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <!-- ========================================================= -->
+    <!-- SCRIPT -->
+    <!-- ========================================================= -->
+
+    <script>
+
+        /* =========================================================
+           TRADUÇÕES
+        ========================================================= */
+
+        const translations = {
+
+            /* =====================================================
+               PORTUGUÊS
+            ===================================================== */
+
+            pt: {
+
+                inst_acd: "ACD — Associação da Comunidade da Diáspora",
+                inst_gov_moldova: "Governo da República da Moldova",
+                inst_gov_portugal: "Governo de Portugal",
+                inst_eu: "União Europeia",
+                inst_invest_moldova: "Agência Invest Moldova",
+                inst_pwc: "PwC Portugal",
+                inst_parl_moldova: "Parlamento da República da Moldova",
+                inst_parl_portugal: "Parlamento da República Portuguesa",
+                inst_loures: "Câmara Municipal de Loures",
+                inst_eu_parliament: "Parlamento Europeu",
+                form_tag: "Inscrição",
+                form_title: "Inscreva-se na Conferência",
+                form_date: "8 de novembro de 2026 · Loures, Portugal",
+                form_close: "Fechar formulário",
+                form_name: "Nome completo",
+                form_name_placeholder: "O seu nome completo",
+                form_email: "Email",
+                form_email_placeholder: "nome@email.com",
+                form_phone: "Telefone",
+                form_phone_placeholder: "+351 9XX XXX XXX",
+                form_org: "Organização / Empresa",
+                form_org_placeholder: "Nome da organização",
+                form_role: "Cargo / Função",
+                form_role_placeholder: "Ex.: Empresário, Deputado, Estudante...",
+                form_participation: "Tipo de participação",
+                form_select: "Selecione uma opção",
+                form_participant: "Participante",
+                form_institutional: "Representante institucional",
+                form_business_investor: "Empresário / Investidor",
+                form_media: "Comunicação / Media",
+                form_other: "Outro",
+                form_volunteer: "Voluntário",
+                form_notes: "Observações",
+                form_notes_placeholder: "Alguma informação que queira acrescentar?",
+                form_consent: "Concordo com o tratamento dos meus dados para efeitos de inscrição e organização da conferência.",
+                form_success: "Inscrição registada com sucesso! Entraremos em contacto consigo.",
+                form_cancel: "Cancelar",
+                form_submit: "Enviar inscrição",
+                form_required: "Os campos assinalados com * são obrigatórios.",
+                mobile_close: "Fechar menu",
+                footer_follow: "Siga-nos",
+                footer_org: "ACD - Associação da Comunidade da Diáspora",
+                footer_rights: "Todos os direitos reservados.",
+
+
+                nav_organizacoes: "Organizações e Parceiros",
+
+                mobile_organizacoes_desc:
+                    "Organizações e parceiros da conferência",
+
+                organizacoes_tag: "Rede",
+
+                organizacoes_title:
+                    "Organizações e Parceiros",
+
+                organizacoes_desc:
+                    "Conheça as organizações e os parceiros que contribuem para a realização da Conferência «Moldova Europeia 2028».",
+
+                                organizacoes_note:
+                    "Os logótipos acima correspondem a entidades já identificadas no conteúdo da conferência e na documentação consultada. Os parceiros formais podem ser acrescentados ou ajustados à medida que forem confirmados pela organização.",
+
+organizacoes_card1_title:
+                    "Organizações",
+
+                organizacoes_card1_desc:
+                    "Entidades e organizações envolvidas na promoção do diálogo e da cooperação entre a República da Moldova e Portugal.",
+
+                organizacoes_card2_title:
+                    "Parceiros Institucionais",
+
+                organizacoes_card2_desc:
+                    "Parceiros institucionais que apoiam a conferência e fortalecem a cooperação bilateral.",
+
+                organizacoes_card3_title:
+                    "Parceiros Empresariais",
+
+                organizacoes_card3_desc:
+                    "Empresas e entidades do setor privado interessadas em investimento, negócios e novas oportunidades de cooperação.",
+
+                title: "Moldova Europeia 2028",
+
+                nav_sobre: "Sobre",
+                nav_oradores: "Oradores",
+                nav_agenda: "Agenda",
+                nav_localizacao: "Localização",
+
+                btn_inscrever: "Inscrever-se",
+
+                mobile_menu_tag: "Navegação",
+                mobile_menu_title: "Explorar evento",
+
+                mobile_sobre_desc: "Sobre a conferência",
+                mobile_oradores_desc: "Oradores e participantes",
+                mobile_agenda_desc: "Programa do evento",
+                mobile_localizacao_desc: "Onde acontece",
+
+                hero_date: "8 de novembro de 2026",
+
+                hero_title: "Moldova Europeia 2028",
+
+                hero_desc:
+                    "Participe na Conferência «Moldova Europeia 2028» e junte-se a políticos, diplomatas, líderes empresariais, investidores e decisores para um dia de diálogo, cooperação estratégica e oportunidades de networking entre a República da Moldova e Portugal.",
+
+                btn_agenda: "Ver Agenda",
+
+                btn_garantir: "Garantir Lugar",
+
+                sobre_card1_title: "Participantes",
+
+                sobre_card1_desc:
+                    "Encontro de representantes institucionais, líderes empresariais, investidores e membros da comunidade moldava em Portugal.",
+
+                sobre_card2_title: "Oradores de alto nível",
+
+                sobre_card2_desc:
+                    "Representantes das instituições da República da Moldova e de Portugal, deputados, eurodeputados e representantes do setor empresarial.",
+
+                sobre_card3_title:
+                    "Cooperação Moldova–Portugal",
+
+                sobre_card3_desc:
+                    "Um espaço dedicado ao diálogo institucional, à cooperação bilateral, ao investimento e às oportunidades económicas.",
+
+                oradores_tag: "Destaques",
+
+                oradores_title:
+                    "Oradores e Participantes do Programa",
+
+                oradores_desc:
+                    "Conheça todas as personalidades e representantes institucionais integrados nos painéis e intervenções da conferência.",
+
+                orador1_cargo:
+                    "Presidente do Parlamento da República da Moldova",
+
+                orador2_cargo:
+                    "Deputado da República Portuguesa",
+
+                orador3_cargo:
+                    "Vice-Primeira-Ministra para a Integração Europeia da República da Moldova",
+
+                orador4_cargo:
+                    "Eurodeputado do Partido Popular Europeu",
+
+                orador5_cargo:
+                    "Deputada da República da Moldova",
+
+                orador6_cargo:
+                    "Deputado da República da Moldova",
+
+                orador7_cargo:
+                    "Diretora da Agência de Investimento da República da Moldova",
+
+                orador8_cargo:
+                    "Sócio de Auditoria da PwC Portugal",
+
+
+                agenda_tag: "8 de novembro",
+
+                agenda_title:
+                    "Agenda do Evento",
+
+                agenda_desc:
+                    "Programa da Conferência «Moldova Europeia 2028», dedicada ao diálogo institucional, à integração europeia, à cooperação bilateral e às oportunidades de investimento.",
+
+                agenda_1400:
+                    "Registo dos participantes",
+
+                agenda_1430_title:
+                    "Cerimónia oficial de abertura",
+
+                agenda_1430_victor_name:
+                    "Victor Țurcanu",
+
+                agenda_1430_victor_cargo:
+                    "Presidente da Associação da Comunidade da Diáspora",
+
+                agenda_1430_ina_name:
+                    "Ina Mamaliga",
+
+                agenda_1430_ina_cargo:
+                    "Representante da Embaixada da República Moldova em Portugal",
+
+                agenda_1430_jose_name:
+                    "Ricardo Leão",
+
+                agenda_1430_jose_cargo:
+                    "Presidente da Câmara Municipal de Loures",
+
+                agenda_1430_mamadu_name:
+                    "Mamadu Makiba",
+
+                agenda_1430_mamadu_cargo:
+                    "Representante do Gabinete de Relações com a Diáspora Moldava",
+
+                agenda_1445_title:
+                    "Apresentação da República da Moldova",
+
+                agenda_1445_1:
+                    "Projeção de um documentário de apresentação",
+
+                agenda_1445_giovani_role:
+                    "MODERADOR",
+
+                agenda_1445_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1445_giovani_cargo:
+                    "Jornalista",
+
+                agenda_1445_marco_name:
+                    "Marco Polo",
+
+                agenda_1445_marco_cargo:
+                    "Agência de Turismo da República da Moldova",
+
+                agenda_1445_cristovao_name:
+                    "Cristóvão Colombo",
+
+                agenda_1445_cristovao_cargo:
+                    "Agência de Turismo de Portugal",
+
+                agenda_1515_title:
+                    "Discursos institucionais",
+
+                agenda_1515_igor_name:
+                    "Igor Grosu",
+
+                agenda_1515_1:
+                    "Presidente do Parlamento da República da Moldova",
+
+                agenda_1515_marques_name:
+                    "Marques Mendes",
+
+                agenda_1515_2:
+                    "Representante do Governo da República Portuguesa",
+
+                agenda_1515_ricardo_name:
+                    "Ricardo Carvalho",
+
+                agenda_1515_3:
+                    "Representante do Parlamento da República Portuguesa",
+
+                panel_1:
+                    "PAINEL TEMÁTICO I",
+
+                agenda_1600_title:
+                    "Os desafios da integração europeia",
+
+                agenda_1600_giovani_role:
+                    "MODERADOR",
+
+                agenda_1600_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1600_giovani_cargo:
+                    "Jornalista",
+
+                agenda_1600_cristina_name:
+                    "Cristina Gherasimov",
+
+                agenda_1600_1:
+                    "Vice-Primeira-Ministra para a Integração Europeia da República da Moldova",
+
+                agenda_1600_helder_name:
+                    "Hélder Silva",
+
+                agenda_1600_2:
+                    "Eurodeputado do Partido Popular Europeu",
+
+                agenda_1600_dodon_name:
+                    "Igor Dodon",
+
+                agenda_1600_3:
+                    "Representante político da República da Moldova",
+
+                panel_2:
+                    "PAINEL TEMÁTICO II",
+
+                agenda_1645_title:
+                    "A relevância da cooperação bilateral entre a República da Moldova e Portugal",
+
+                agenda_1645_giovani_role:
+                    "MODERADOR",
+
+                agenda_1645_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1645_giovani_cargo:
+                    "Jornalista",
+
+                agenda_1645_angela_name:
+                    "Angela Pojoga",
+
+                agenda_1645_angela_cargo:
+                    "Deputada da República da Moldova",
+
+                agenda_1645_valeriu_name:
+                    "Valeriu Robu",
+
+                agenda_1645_valeriu_cargo:
+                    "Deputado da República da Moldova",
+
+                agenda_1645_hugo_name:
+                    "Hugo Soares",
+
+                agenda_1645_hugo_cargo:
+                    "Deputado do PSD",
+
+                agenda_1645_pedro_name:
+                    "Pedro Carneiro",
+
+                agenda_1645_pedro_cargo:
+                    "Deputado do PS",
+
+                agenda_1730:
+                    "Pausa para café",
+
+                panel_3:
+                    "PAINEL TEMÁTICO III",
+
+                agenda_1800_title:
+                    "Dinamização do investimento e oportunidades de cooperação económica entre a República da Moldova e Portugal",
+
+                agenda_1800_giovani_role:
+                    "MODERADOR",
+
+                agenda_1800_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1800_giovani_cargo:
+                    "Jornalista",
+
+                agenda_1800_natalia_name:
+                    "Natalia Bejan",
+
+                agenda_1800_1:
+                    "Diretora da Agência de Investimento da República da Moldova",
+
+                agenda_1800_jose_name:
+                    "José Bizarro Duarte",
+
+                agenda_1800_2:
+                    "Sócio de Auditoria da PwC Portugal",
+
+                localizacao_tag:
+                    "Onde vai acontecer",
+
+                localizacao_title:
+                    "Localização do Evento",
+
+                localizacao_desc:
+                    "A conferência decorrerá num espaço histórico de referência no concelho de Loures.",
+
+                local_name:
+                    "Palácio dos Marqueses da Praia e Monforte",
+
+                local_address:
+                    "Loures, Portugal",
+
+                local_info:
+                    "Um espaço com excelentes acessibilidades, preparado para acolher individualidades institucionais, corpo diplomático e convidados num ambiente solene e propício à cooperação estratégica.",
+
+                btn_maps:
+                    "Abrir no Google Maps"
+            },
+
+
+            /* =====================================================
+               ROMENO
+            ===================================================== */
+
+            ro: {
+
+                inst_acd: "ACD — Asociația Comunității Diasporei",
+                inst_gov_moldova: "Guvernul Republicii Moldova",
+                inst_gov_portugal: "Guvernul Portugaliei",
+                inst_eu: "Uniunea Europeană",
+                inst_invest_moldova: "Agenția Invest Moldova",
+                inst_pwc: "PwC Portugalia",
+                inst_parl_moldova: "Parlamentul Republicii Moldova",
+                inst_parl_portugal: "Parlamentul Republicii Portugheze",
+                inst_loures: "Primăria Municipiului Loures",
+                inst_eu_parliament: "Parlamentul European",
+                form_tag: "Înscriere",
+                form_title: "Înscrieți-vă la Conferință",
+                form_date: "8 noiembrie 2026 · Loures, Portugalia",
+                form_close: "Închideți formularul",
+                form_name: "Nume și prenume",
+                form_name_placeholder: "Numele dumneavoastră",
+                form_email: "Email",
+                form_email_placeholder: "nume@email.com",
+                form_phone: "Telefon",
+                form_phone_placeholder: "+373 XX XXX XXX",
+                form_org: "Organizație / Companie",
+                form_org_placeholder: "Numele organizației",
+                form_role: "Funcție / Rol",
+                form_role_placeholder: "Ex.: Antreprenor, Deputat, Student...",
+                form_participation: "Tipul participării",
+                form_select: "Selectați o opțiune",
+                form_participant: "Participant",
+                form_institutional: "Reprezentant instituțional",
+                form_business_investor: "Antreprenor / Investitor",
+                form_media: "Comunicare / Media",
+                form_other: "Altul",
+                form_volunteer: "Voluntar",
+                form_notes: "Observații",
+                form_notes_placeholder: "Doriți să adăugați vreo informație?",
+                form_consent: "Sunt de acord cu prelucrarea datelor mele în scopul înscrierii și organizării conferinței.",
+                form_success: "Înscrierea a fost înregistrată cu succes! Vă vom contacta.",
+                form_cancel: "Anulați",
+                form_submit: "Trimiteți înscrierea",
+                form_required: "Câmpurile marcate cu * sunt obligatorii.",
+                mobile_close: "Închideți meniul",
+                footer_follow: "Urmăriți-ne",
+                footer_org: "ACD - Asociația Comunității Diasporei",
+                footer_rights: "Toate drepturile rezervate.",
+
+
+                nav_organizacoes: "Organizații și Parteneri",
+
+                mobile_organizacoes_desc:
+                    "Organizațiile și partenerii conferinței",
+
+                organizacoes_tag: "Rețea",
+
+                organizacoes_title:
+                    "Organizații și Parteneri",
+
+                organizacoes_desc:
+                    "Descoperiți organizațiile și partenerii care contribuie la realizarea Conferinței „Moldova Europeană 2028”.",
+
+                                organizacoes_note:
+                    "Logo-urile de mai sus corespund entităților deja identificate în conținutul conferinței și în documentația consultată. Partenerii oficiali pot fi adăugați sau ajustați pe măsură ce sunt confirmați de organizație.",
+
+organizacoes_card1_title:
+                    "Organizații",
+
+                organizacoes_card1_desc:
+                    "Entități și organizații implicate în promovarea dialogului și cooperării dintre Republica Moldova și Portugalia.",
+
+                organizacoes_card2_title:
+                    "Parteneri Instituționali",
+
+                organizacoes_card2_desc:
+                    "Parteneri instituționali care sprijină conferința și consolidează cooperarea bilaterală.",
+
+                organizacoes_card3_title:
+                    "Parteneri de Afaceri",
+
+                organizacoes_card3_desc:
+                    "Companii și entități din sectorul privat interesate de investiții, afaceri și noi oportunități de cooperare.",
+
+                title: "Moldova Europeană 2028",
+
+                nav_sobre: "Despre",
+                nav_oradores: "Vorbitori",
+                nav_agenda: "Agendă",
+                nav_localizacao: "Locație",
+
+                btn_inscrever: "Înscrie-te",
+
+                mobile_menu_tag: "Navigare",
+                mobile_menu_title: "Explorează evenimentul",
+
+                mobile_sobre_desc: "Despre conferință",
+                mobile_oradores_desc: "Vorbitori și participanți",
+                mobile_agenda_desc: "Programul evenimentului",
+                mobile_localizacao_desc: "Locul desfășurării",
+
+                hero_date: "8 noiembrie 2026",
+
+                hero_title: "Moldova Europeană 2028",
+
+                hero_desc:
+                    "Participați la Conferința „Moldova Europeană 2028” și alăturați-vă reprezentanților de nivel înalt, liderilor de afaceri, investitorilor și factorilor de decizie pentru o zi de dialog, cooperare strategică și oportunități de networking între Republica Moldova și Portugalia.",
+
+                btn_agenda: "Vezi Agenda",
+
+                btn_garantir: "Rezervă un loc",
+
+                sobre_card1_title: "Participanți",
+
+                sobre_card1_desc:
+                    "Reuniune a reprezentanților instituționali, liderilor de afaceri, investitorilor și membrilor comunității moldovenești din Portugalia.",
+
+                sobre_card2_title:
+                    "Vorbitori de nivel înalt",
+
+                sobre_card2_desc:
+                    "Reprezentanți ai instituțiilor Republicii Moldova și Portugaliei, deputați, europarlamentari și reprezentanți ai mediului de afaceri.",
+
+                sobre_card3_title:
+                    "Cooperarea Moldova–Portugalia",
+
+                sobre_card3_desc:
+                    "Un spațiu dedicat dialogului instituțional, cooperării bilaterale, investițiilor și oportunităților economice.",
+
+                oradores_tag: "Repere",
+
+                oradores_title:
+                    "Vorbitori și Participanți la Program",
+
+                oradores_desc:
+                    "Descoperiți personalitățile și reprezentanții instituționali integrați în panelurile și intervențiile conferinței.",
+
+                orador1_cargo:
+                    "Președintele Parlamentului Republicii Moldova",
+
+                orador2_cargo:
+                    "Deputat al Republicii Portugheze",
+
+                orador3_cargo:
+                    "Viceprim-ministru pentru Integrare Europeană al Republicii Moldova",
+
+                orador4_cargo:
+                    "Europarlamentar al Partidului Popular European",
+
+                orador5_cargo:
+                    "Deputată a Republicii Moldova",
+
+                orador6_cargo:
+                    "Deputat al Republicii Moldova",
+
+                orador7_cargo:
+                    "Directoarea Agenției de Investiții a Republicii Moldova",
+
+                orador8_cargo:
+                    "Partener Audit, PwC Portugalia",
+
+                agenda_tag:
+                    "8 noiembrie",
+
+                agenda_title:
+                    "Agenda Evenimentului",
+
+                agenda_desc:
+                    "Programul Conferinței „Moldova Europeană 2028”, dedicat dialogului instituțional, integrării europene, cooperării bilaterale și oportunităților de investiții.",
+
+                agenda_1400:
+                    "Înregistrarea participanților",
+
+                agenda_1430_title:
+                    "Ceremonia oficială de deschidere",
+
+                agenda_1430_victor_name:
+                    "Victor Țurcanu",
+
+                agenda_1430_victor_cargo:
+                    "Președintele Asociației Comunitatea Diasporei",
+
+                agenda_1430_ina_name:
+                    "Ina Mamaliga",
+
+                agenda_1430_ina_cargo:
+                    "Reprezentanta Ambasadei Republicii Moldova în Portugalia",
+
+                agenda_1430_jose_name:
+                    "Ricardo Leão",
+
+                agenda_1430_jose_cargo:
+                    "Președintele Consiliului Municipal Loures",
+
+                agenda_1430_mamadu_name:
+                    "Mamadu Makiba",
+
+                agenda_1430_mamadu_cargo:
+                    "Reprezentant al Biroului pentru Relații cu Diaspora Moldovenească",
+
+                agenda_1445_title:
+                    "Prezentarea Republicii Moldova",
+
+                agenda_1445_1:
+                    "Proiecția unui documentar de prezentare",
+
+                agenda_1445_giovani_role:
+                    "MODERATOR",
+
+                agenda_1445_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1445_giovani_cargo:
+                    "Jurnalist",
+
+                agenda_1445_marco_name:
+                    "Marco Polo",
+
+                agenda_1445_marco_cargo:
+                    "Agenția de Turism a Republicii Moldova",
+
+                agenda_1445_cristovao_name:
+                    "Cristofor Columb",
+
+                agenda_1445_cristovao_cargo:
+                    "Agenția de Turism a Portugaliei",
+
+                agenda_1515_title:
+                    "Discursuri instituționale",
+
+                agenda_1515_igor_name:
+                    "Igor Grosu",
+
+                agenda_1515_1:
+                    "Președintele Parlamentului Republicii Moldova",
+
+                agenda_1515_marques_name:
+                    "Marques Mendes",
+
+                agenda_1515_2:
+                    "Reprezentant al Guvernului Republicii Portugheze",
+
+                agenda_1515_ricardo_name:
+                    "Ricardo Carvalho",
+
+                agenda_1515_3:
+                    "Reprezentant al Parlamentului Republicii Portugheze",
+
+                panel_1:
+                    "PANEL TEMATIC I",
+
+                agenda_1600_title:
+                    "Provocările integrării europene",
+
+                agenda_1600_giovani_role:
+                    "MODERATOR",
+
+                agenda_1600_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1600_giovani_cargo:
+                    "Jurnalist",
+
+                agenda_1600_cristina_name:
+                    "Cristina Gherasimov",
+
+                agenda_1600_1:
+                    "Viceprim-ministru pentru Integrare Europeană al Republicii Moldova",
+
+                agenda_1600_helder_name:
+                    "Hélder Silva",
+
+                agenda_1600_2:
+                    "Europarlamentar al Partidului Popular European",
+
+                agenda_1600_dodon_name:
+                    "Igor Dodon",
+
+                agenda_1600_3:
+                    "Reprezentant politic al Republicii Moldova",
+
+                panel_2:
+                    "PANEL TEMATIC II",
+
+                agenda_1645_title:
+                    "Relevanța cooperării bilaterale dintre Republica Moldova și Portugalia",
+
+                agenda_1645_giovani_role:
+                    "MODERATOR",
+
+                agenda_1645_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1645_giovani_cargo:
+                    "Jurnalist",
+
+                agenda_1645_angela_name:
+                    "Angela Pojoga",
+
+                agenda_1645_angela_cargo:
+                    "Deputată a Republicii Moldova",
+
+                agenda_1645_valeriu_name:
+                    "Valeriu Robu",
+
+                agenda_1645_valeriu_cargo:
+                    "Deputat al Republicii Moldova",
+
+                agenda_1645_hugo_name:
+                    "Hugo Soares",
+
+                agenda_1645_hugo_cargo:
+                    "Deputat PSD",
+
+                agenda_1645_pedro_name:
+                    "Pedro Carneiro",
+
+                agenda_1645_pedro_cargo:
+                    "Deputat PS",
+
+                agenda_1730:
+                    "Pauză de cafea",
+
+                panel_3:
+                    "PANEL TEMATIC III",
+
+                agenda_1800_title:
+                    "Dinamizarea investițiilor și oportunități de cooperare economică între Republica Moldova și Portugalia",
+
+                agenda_1800_giovani_role:
+                    "MODERATOR",
+
+                agenda_1800_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1800_giovani_cargo:
+                    "Jurnalist",
+
+                agenda_1800_natalia_name:
+                    "Natalia Bejan",
+
+                agenda_1800_1:
+                    "Directoarea Agenției de Investiții a Republicii Moldova",
+
+                agenda_1800_jose_name:
+                    "José Bizarro Duarte",
+
+                agenda_1800_2:
+                    "Partener Audit, PwC Portugalia",
+
+                localizacao_tag:
+                    "Unde va avea loc",
+
+                localizacao_title:
+                    "Locația Evenimentului",
+
+                localizacao_desc:
+                    "Conferința va avea loc într-un spațiu istoric de referință din municipiul Loures.",
+
+                local_name:
+                    "Palatul Marchizilor de Praia și Monforte",
+
+                local_address:
+                    "Loures, Portugalia",
+
+                local_info:
+                    "Un spațiu cu accesibilitate excelentă, pregătit să găzduiască personalități instituționale, corpul diplomatic și invitați într-un mediu solemn și favorabil cooperării strategice.",
+
+                btn_maps:
+                    "Deschide în Google Maps"
+            },
+
+
+            /* =====================================================
+               INGLÊS
+            ===================================================== */
+
+            en: {
+
+                inst_acd: "ACD — Diaspora Community Association",
+                inst_gov_moldova: "Government of the Republic of Moldova",
+                inst_gov_portugal: "Government of Portugal",
+                inst_eu: "European Union",
+                inst_invest_moldova: "Invest Moldova Agency",
+                inst_pwc: "PwC Portugal",
+                inst_parl_moldova: "Parliament of the Republic of Moldova",
+                inst_parl_portugal: "Parliament of the Portuguese Republic",
+                inst_loures: "Loures Municipal Council",
+                inst_eu_parliament: "European Parliament",
+                form_tag: "Registration",
+                form_title: "Register for the Conference",
+                form_date: "November 8, 2026 · Loures, Portugal",
+                form_close: "Close form",
+                form_name: "Full name",
+                form_name_placeholder: "Your full name",
+                form_email: "Email",
+                form_email_placeholder: "name@email.com",
+                form_phone: "Phone",
+                form_phone_placeholder: "+373 XX XXX XXX",
+                form_org: "Organization / Company",
+                form_org_placeholder: "Organization name",
+                form_role: "Position / Role",
+                form_role_placeholder: "E.g.: Business owner, Member of Parliament, Student...",
+                form_participation: "Participation type",
+                form_select: "Select an option",
+                form_participant: "Participant",
+                form_institutional: "Institutional representative",
+                form_business_investor: "Business owner / Investor",
+                form_media: "Communications / Media",
+                form_other: "Other",
+                form_volunteer: "Volunteer",
+                form_notes: "Notes",
+                form_notes_placeholder: "Would you like to add any information?",
+                form_consent: "I agree to the processing of my data for registration and conference organization purposes.",
+                form_success: "Registration successfully submitted! We will contact you.",
+                form_cancel: "Cancel",
+                form_submit: "Submit registration",
+                form_required: "Fields marked with * are required.",
+                mobile_close: "Close menu",
+                footer_follow: "Follow us",
+                footer_org: "ACD - Diaspora Community Association",
+                footer_rights: "All rights reserved.",
+
+
+                nav_organizacoes: "Organizations and Partners",
+
+                mobile_organizacoes_desc:
+                    "Conference organizations and partners",
+
+                organizacoes_tag: "Network",
+
+                organizacoes_title:
+                    "Organizations and Partners",
+
+                organizacoes_desc:
+                    "Meet the organizations and partners contributing to the «European Moldova 2028» Conference.",
+
+                                organizacoes_note:
+                    "The logos above correspond to entities already identified in the conference content and in the documentation consulted. Formal partners may be added or adjusted as they are confirmed by the organization.",
+
+organizacoes_card1_title:
+                    "Organizations",
+
+                organizacoes_card1_desc:
+                    "Entities and organizations involved in promoting dialogue and cooperation between the Republic of Moldova and Portugal.",
+
+                organizacoes_card2_title:
+                    "Institutional Partners",
+
+                organizacoes_card2_desc:
+                    "Institutional partners supporting the conference and strengthening bilateral cooperation.",
+
+                organizacoes_card3_title:
+                    "Business Partners",
+
+                organizacoes_card3_desc:
+                    "Companies and private-sector entities interested in investment, business, and new cooperation opportunities.",
+
+                title: "European Moldova 2028",
+
+                nav_sobre: "About",
+                nav_oradores: "Speakers",
+                nav_agenda: "Agenda",
+                nav_localizacao: "Location",
+
+                btn_inscrever: "Register",
+
+                mobile_menu_tag: "Navigation",
+                mobile_menu_title: "Explore the event",
+
+                mobile_sobre_desc: "About the conference",
+                mobile_oradores_desc: "Speakers and participants",
+                mobile_agenda_desc: "Event programme",
+                mobile_localizacao_desc: "Where it takes place",
+
+                hero_date: "November 8, 2026",
+
+                hero_title: "European Moldova 2028",
+
+                hero_desc:
+                    "Join the «European Moldova 2028» Conference and connect with high-level representatives, business leaders, investors, and decision-makers for a day of dialogue, strategic cooperation, and networking opportunities between the Republic of Moldova and Portugal.",
+
+                btn_agenda: "View Agenda",
+
+                btn_garantir: "Secure Your Spot",
+
+                sobre_card1_title: "Participants",
+
+                sobre_card1_desc:
+                    "A gathering of institutional representatives, business leaders, investors, and members of the Moldovan community in Portugal.",
+
+                sobre_card2_title:
+                    "High-level Speakers",
+
+                sobre_card2_desc:
+                    "Representatives from the institutions of the Republic of Moldova and Portugal, members of parliament, MEPs, and business representatives.",
+
+                sobre_card3_title:
+                    "Moldova–Portugal Cooperation",
+
+                sobre_card3_desc:
+                    "A dedicated space for institutional dialogue, bilateral cooperation, investment, and economic opportunities.",
+
+                oradores_tag: "Highlights",
+
+                oradores_title:
+                    "Speakers and Programme Participants",
+
+                oradores_desc:
+                    "Meet the personalities and institutional representatives participating in the conference panels and interventions.",
+
+                orador1_cargo:
+                    "President of the Parliament of the Republic of Moldova",
+
+                orador2_cargo:
+                    "Member of the Portuguese Parliament",
+
+                orador3_cargo:
+                    "Deputy Prime Minister for European Integration of the Republic of Moldova",
+
+                orador4_cargo:
+                    "Member of the European Parliament, European People's Party",
+
+                orador5_cargo:
+                    "Member of Parliament of the Republic of Moldova",
+
+                orador6_cargo:
+                    "Member of Parliament of the Republic of Moldova",
+
+                orador7_cargo:
+                    "Director of the Investment Agency of the Republic of Moldova",
+
+                orador8_cargo:
+                    "Audit Partner, PwC Portugal",
+
+                agenda_tag:
+                    "November 8",
+
+                agenda_title:
+                    "Event Agenda",
+
+                agenda_desc:
+                    "Programme of the «European Moldova 2028» Conference, dedicated to institutional dialogue, European integration, bilateral cooperation, and investment opportunities.",
+
+                agenda_1400:
+                    "Participant registration",
+
+                agenda_1430_title:
+                    "Official opening ceremony",
+
+                agenda_1430_victor_name:
+                    "Victor Țurcanu",
+
+                agenda_1430_victor_cargo:
+                    "President of the Diaspora Community Association",
+
+                agenda_1430_ina_name:
+                    "Ina Mamaliga",
+
+                agenda_1430_ina_cargo:
+                    "Representative of the Embassy of the Republic of Moldova in Portugal",
+
+                agenda_1430_jose_name:
+                    "Ricardo Leão",
+
+                agenda_1430_jose_cargo:
+                    "President of the Loures Municipal Council",
+
+                agenda_1430_mamadu_name:
+                    "Mamadu Makiba",
+
+                agenda_1430_mamadu_cargo:
+                    "Representative of the Office for Relations with the Moldovan Diaspora",
+
+                agenda_1445_title:
+                    "Presentation of the Republic of Moldova",
+
+                agenda_1445_1:
+                    "Screening of a presentation documentary",
+
+                agenda_1445_giovani_role:
+                    "MODERATOR",
+
+                agenda_1445_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1445_giovani_cargo:
+                    "Journalist",
+
+                agenda_1445_marco_name:
+                    "Marco Polo",
+
+                agenda_1445_marco_cargo:
+                    "Tourism Agency of the Republic of Moldova",
+
+                agenda_1445_cristovao_name:
+                    "Christopher Columbus",
+
+                agenda_1445_cristovao_cargo:
+                    "Tourism Agency of Portugal",
+
+                agenda_1515_title:
+                    "Institutional speeches",
+
+                agenda_1515_igor_name:
+                    "Igor Grosu",
+
+                agenda_1515_1:
+                    "President of the Parliament of the Republic of Moldova",
+
+                agenda_1515_marques_name:
+                    "Marques Mendes",
+
+                agenda_1515_2:
+                    "Representative of the Government of the Portuguese Republic",
+
+                agenda_1515_ricardo_name:
+                    "Ricardo Carvalho",
+
+                agenda_1515_3:
+                    "Representative of the Parliament of the Portuguese Republic",
+
+                panel_1:
+                    "THEMATIC PANEL I",
+
+                agenda_1600_title:
+                    "The challenges of European integration",
+
+                agenda_1600_giovani_role:
+                    "MODERATOR",
+
+                agenda_1600_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1600_giovani_cargo:
+                    "Journalist",
+
+                agenda_1600_cristina_name:
+                    "Cristina Gherasimov",
+
+                agenda_1600_1:
+                    "Deputy Prime Minister for European Integration of the Republic of Moldova",
+
+                agenda_1600_helder_name:
+                    "Hélder Silva",
+
+                agenda_1600_2:
+                    "Member of the European Parliament, European People's Party",
+
+                agenda_1600_dodon_name:
+                    "Igor Dodon",
+
+                agenda_1600_3:
+                    "Political representative of the Republic of Moldova",
+
+                panel_2:
+                    "THEMATIC PANEL II",
+
+                agenda_1645_title:
+                    "The relevance of bilateral cooperation between the Republic of Moldova and Portugal",
+
+                agenda_1645_giovani_role:
+                    "MODERATOR",
+
+                agenda_1645_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1645_giovani_cargo:
+                    "Journalist",
+
+                agenda_1645_angela_name:
+                    "Angela Pojoga",
+
+                agenda_1645_angela_cargo:
+                    "Member of Parliament of the Republic of Moldova",
+
+                agenda_1645_valeriu_name:
+                    "Valeriu Robu",
+
+                agenda_1645_valeriu_cargo:
+                    "Member of Parliament of the Republic of Moldova",
+
+                agenda_1645_hugo_name:
+                    "Hugo Soares",
+
+                agenda_1645_hugo_cargo:
+                    "PSD Member of Parliament",
+
+                agenda_1645_pedro_name:
+                    "Pedro Carneiro",
+
+                agenda_1645_pedro_cargo:
+                    "PS Member of Parliament",
+
+                agenda_1730:
+                    "Coffee break",
+
+                panel_3:
+                    "THEMATIC PANEL III",
+
+                agenda_1800_title:
+                    "Boosting investment and economic cooperation opportunities between the Republic of Moldova and Portugal",
+
+                agenda_1800_giovani_role:
+                    "MODERATOR",
+
+                agenda_1800_giovani_name:
+                    "Giovani Mamaliga",
+
+                agenda_1800_giovani_cargo:
+                    "Journalist",
+
+                agenda_1800_natalia_name:
+                    "Natalia Bejan",
+
+                agenda_1800_1:
+                    "Director of the Investment Agency of the Republic of Moldova",
+
+                agenda_1800_jose_name:
+                    "José Bizarro Duarte",
+
+                agenda_1800_2:
+                    "Audit Partner, PwC Portugal",
+
+                localizacao_tag:
+                    "Where it will take place",
+
+                localizacao_title:
+                    "Event Location",
+
+                localizacao_desc:
+                    "The conference will take place at a renowned historic venue in the municipality of Loures.",
+
+                local_name:
+                    "Palace of the Marquesses of Praia and Monforte",
+
+                local_address:
+                    "Loures, Portugal",
+
+                local_info:
+                    "A venue with excellent accessibility, prepared to welcome institutional figures, the diplomatic corps, and guests in a solemn environment conducive to strategic cooperation.",
+
+                btn_maps:
+                    "Open in Google Maps"
+            }
+
+        };
+
+
+
+        /* =========================================================
+           SISTEMA DE TRADUÇÃO
+        ========================================================= */
+
+        
+const languageSelector =
+            document.getElementById("language-selector");
+
+
+        function applyLanguage(lang) {
+
+            const t = translations[lang];
+
+            if (!t) return;
+
+
+            /* Elementos com data-i18n */
+
+            document.querySelectorAll("[data-i18n]").forEach(element => {
+
+                const key = element.getAttribute("data-i18n");
+
+                if (t[key]) {
+                    const attr = element.getAttribute("data-i18n-attr");
+                    if (attr) {
+                        element.setAttribute(attr, t[key]);
+                    } else {
+                        element.innerHTML = t[key];
+                    }
+                }
+
+            });
+
+            /* Placeholders traduzíveis */
+
+            document.querySelectorAll("[data-i18n-placeholder]").forEach(element => {
+
+                const key = element.getAttribute("data-i18n-placeholder");
+
+                if (t[key]) {
+                    element.setAttribute("placeholder", t[key]);
+                }
+
+            });
+
+
+            /* Atualiza idioma HTML */
+
+            document.documentElement.lang = lang;
+
+
+            /* Atualiza título */
+
+            if (t.title) {
+                document.title = t.title;
+            }
+
+        }
+
+
+        languageSelector.addEventListener("change", function(event) {
+
+            applyLanguage(event.target.value);
+
+        });
+
+
+
+        /* =========================================================
+           MENU MOBILE
+        ========================================================= */
+
+        const mobileMenuButton =
+            document.getElementById("mobile-menu-button");
+
+        const mobileMenu =
+            document.getElementById("mobile-menu");
+
+        const mobileOverlay =
+            document.getElementById("mobile-overlay");
+
+        const mobileMenuClose =
+            document.getElementById("mobile-menu-close");
+
+        const mobileMenuIcon =
+            document.getElementById("mobile-menu-icon");
+
+        const mobileNavLinks =
+            document.querySelectorAll(".mobile-nav-link");
+
+
+        /* Abrir menu */
+
+        function openMobileMenu() {
+
+            mobileMenu.classList.add("active");
+
+            mobileOverlay.classList.add("active");
+
+            document.body.classList.add("menu-open");
+
+            mobileMenuButton.setAttribute("aria-expanded", "true");
+
+            mobileMenuIcon.classList.remove("fa-bars");
+
+            mobileMenuIcon.classList.add("fa-xmark");
+
+        }
+
+
+        /* Fechar menu */
+
+        function closeMobileMenu() {
+
+            mobileMenu.classList.remove("active");
+
+            mobileOverlay.classList.remove("active");
+
+            document.body.classList.remove("menu-open");
+
+            mobileMenuButton.setAttribute("aria-expanded", "false");
+
+            mobileMenuIcon.classList.remove("fa-xmark");
+
+            mobileMenuIcon.classList.add("fa-bars");
+
+        }
+
+
+        /* Clique no botão */
+
+        mobileMenuButton.addEventListener("click", function() {
+
+            const isOpen =
+                mobileMenu.classList.contains("active");
+
+
+            if (isOpen) {
+
+                closeMobileMenu();
+
+            } else {
+
+                openMobileMenu();
+
+            }
+
+        });
+
+
+        /* Botão X */
+
+        mobileMenuClose.addEventListener("click", function() {
+
+            closeMobileMenu();
+
+        });
+
+
+        /* Clique no fundo */
+
+        mobileOverlay.addEventListener("click", function() {
+
+            closeMobileMenu();
+
+        });
+
+
+        /* Clique nos tópicos */
+
+        mobileNavLinks.forEach(link => {
+
+            link.addEventListener("click", function() {
+
+                closeMobileMenu();
+
+            });
+
+        });
+
+
+        /* ESC fecha o menu */
+
+        document.addEventListener("keydown", function(event) {
+
+            if (event.key === "Escape") {
+
+                closeMobileMenu();
+
+            }
+
+        });
+
+
+        /* Se passar para desktop, fecha menu */
+
+        window.addEventListener("resize", function() {
+
+            if (window.innerWidth >= 768) {
+
+                closeMobileMenu();
+
+            }
+
+        });
+
+
+
+        /* =========================================================
+           FORMULÁRIO DE INSCRIÇÃO
+        ========================================================= */
+        const inscricaoModal = document.getElementById("inscricao-modal");
+        const inscricaoClose = document.getElementById("inscricao-close");
+        const inscricaoCancelar = document.getElementById("inscricao-cancelar");
+        const inscricaoForm = document.getElementById("inscricao-form");
+        const inscricaoSucesso = document.getElementById("inscricao-sucesso");
+
+        const registrationButtons = [
+            document.getElementById("btn-inscricao"),
+            document.getElementById("btn-inscricao-mobile"),
+            document.getElementById("btn-garantir")
+        ].filter(Boolean);
+
+        function openInscricaoModal(event) {
+            if (event) event.preventDefault();
+
+            inscricaoModal.classList.remove("hidden");
+            inscricaoModal.classList.add("active");
+            document.body.classList.add("modal-open");
+
+            setTimeout(() => {
+                const nome = document.getElementById("nome");
+                if (nome) nome.focus();
+            }, 100);
+        }
+
+        function closeInscricaoModal() {
+            inscricaoModal.classList.add("hidden");
+            inscricaoModal.classList.remove("active");
+            document.body.classList.remove("modal-open");
+        }
+
+        registrationButtons.forEach(button => {
+            button.addEventListener("click", openInscricaoModal);
+        });
+
+        if (inscricaoClose) {
+            inscricaoClose.addEventListener("click", closeInscricaoModal);
+        }
+
+        if (inscricaoCancelar) {
+            inscricaoCancelar.addEventListener("click", closeInscricaoModal);
+        }
+
+        if (inscricaoModal) {
+            inscricaoModal.addEventListener("click", function(event) {
+                if (event.target === inscricaoModal) {
+                    closeInscricaoModal();
+                }
+            });
+        }
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Escape" &&
+                inscricaoModal &&
+                !inscricaoModal.classList.contains("hidden")) {
+                closeInscricaoModal();
+            }
+        });
+
+        if (inscricaoForm) {
+            inscricaoForm.addEventListener("submit", function(event) {
+                event.preventDefault();
+
+                if (!inscricaoForm.checkValidity()) {
+                    inscricaoForm.reportValidity();
+                    return;
+                }
+
+                inscricaoSucesso.classList.remove("hidden");
+                inscricaoForm.reset();
+
+                setTimeout(() => {
+                    inscricaoSucesso.classList.add("hidden");
+                    closeInscricaoModal();
+                }, 2500);
+            });
+        }
+
+        /* Inicializa PT */
+
+        applyLanguage("pt");
+
+    </script>
+
+</body>
+</html>
